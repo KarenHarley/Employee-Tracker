@@ -68,7 +68,7 @@ function getRole() {
       return row
     }
   );
-  //return together;
+  return row;
 }
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
