@@ -12,6 +12,7 @@ class myClass {
   }
   */
 
+const { response } = require("express");
 const express = require("express");
 const { createPromptModule } = require("inquirer");
 const mysql = require("mysql2");
@@ -39,17 +40,20 @@ const db = mysql.createConnection(
 getNames = () => {
   let employeeList;
 
-  db.query(
+  return db.query(
     "SELECT first_name,last_name FROM employee",
     function (err, results) {
+     // console.log(results)
       employeeList = results.map((employee) => {
         return [employee.first_name, employee.last_name].join(" ");
       });
-      // console.log(employeeList)
+       console.log(employeeList)
+      return employeeList;
     }
+    
   );
 
-  return employeeList;
+  //return employeeList;
 };
 
 function getRole() {
@@ -70,6 +74,6 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-getNames();
+//getNames();
 //getRole();
-console.log(getNames());
+getNames().then((response)=> console.log(response));
