@@ -13,6 +13,7 @@ class myClass {
   */
 
 const express = require("express");
+const { createPromptModule } = require("inquirer");
 const mysql = require("mysql2");
 
 const PORT = process.env.PORT || 3001;
@@ -36,39 +37,37 @@ const db = mysql.createConnection(
 );
 
 function getNames() {
-  let together;
+  let employeeList;
+
   db.query(
     "SELECT first_name,last_name FROM employee",
     function (err, results) {
-      console.log(results); //will come back as json
-
-      function getFullName(item) {
-        return [item.first_name, item.last_name].join(" ");
-      }
-      together = results.map(getFullName);
-      console.log(together)
-      
+    
+      employeeList = results.map((employee) => {
+         return [employee.first_name, employee.last_name].join(" ")
+      });
+     // console.log(employeeList)
+   
     }
+  
   );
-  return together;
+
+  return employeeList;
 }
+
 
 function getRole() {
   let row;
-  db.query(
-    "SELECT title FROM role",
-    function (err, results) {
-      //console.log(results); //will come back as json
+  db.query("SELECT title FROM role", function (err, results) {
+    //console.log(results); //will come back as json
 
-       row = results.map(getRow);
-       //console.log(row)
-      function getRow(item) {
-        return [item.title];
-       // console.log([item.title])
-      }
-      return row
+    //console.log(row)
+    function getRow(item) {
+      return [item.title];
+      // console.log([item.title])
     }
-  );
+    row = results.map(getRow);
+  });
   return row;
 }
 app.listen(PORT, () => {
@@ -76,6 +75,5 @@ app.listen(PORT, () => {
 });
 
 getNames();
-getRole()
+//getRole();
 console.log(getNames());
-
