@@ -42,11 +42,12 @@ function getNames() {
     function (err, results) {
       console.log(results); //will come back as json
 
-      together = results.map(getFullName);
-
       function getFullName(item) {
         return [item.first_name, item.last_name].join(" ");
       }
+      together = results.map(getFullName);
+      //console.log(together)
+      
     }
   );
   return together;
@@ -57,7 +58,7 @@ function getRole() {
   db.query(
     "SELECT title FROM role",
     function (err, results) {
-      console.log(results); //will come back as json
+      //console.log(results); //will come back as json
 
        row = results.map(getRow);
        //console.log(row)
