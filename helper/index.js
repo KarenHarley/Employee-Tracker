@@ -40,23 +40,41 @@ function getNames() {
   db.query(
     "SELECT first_name,last_name FROM employee",
     function (err, results) {
-      //console.log(results); //will come back as json
+      console.log(results); //will come back as json
 
-      results.map(getFullName);
+      together = results.map(getFullName);
 
       function getFullName(item) {
-       together = [item.first_name,item.last_name].join(" ");
-        //console.log([item.first_name,item.last_name].join(" "))
-       // return [item.first_name,item.last_name].join(" ");
+        return [item.first_name, item.last_name].join(" ");
       }
     }
   );
-  return together
+  return together;
+}
+
+function getRole() {
+  let row;
+  db.query(
+    "SELECT title FROM role",
+    function (err, results) {
+      console.log(results); //will come back as json
+
+       row = results.map(getRow);
+       //console.log(row)
+      function getRow(item) {
+        return [item.title];
+       // console.log([item.title])
+      }
+      return row
+    }
+  );
+  //return together;
 }
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-getNames()
-console.log(getNames())
-// module.exports = { readFromFile, writeToFile, readAndAppend };//modiftiy
+getNames();
+getRole()
+console.log(getNames());
+

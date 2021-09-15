@@ -112,7 +112,7 @@ function appMenu() {
             "Sandra Peterson",
             "Mike Beckwith",
             "Pamela Wessiman",
-          ],
+          ],//to something like push("None")
         },
       ])
       .then((answers) => {
