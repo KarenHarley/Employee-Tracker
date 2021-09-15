@@ -46,7 +46,7 @@ function getNames() {
         return [item.first_name, item.last_name].join(" ");
       }
       together = results.map(getFullName);
-      //console.log(together)
+      console.log(together)
       
     }
   );
