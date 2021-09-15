@@ -36,25 +36,21 @@ const db = mysql.createConnection(
   console.log(`Connected to the employee_db database.`)
 );
 
-function getNames() {
+getNames = () => {
   let employeeList;
 
   db.query(
     "SELECT first_name,last_name FROM employee",
     function (err, results) {
-    
       employeeList = results.map((employee) => {
-         return [employee.first_name, employee.last_name].join(" ")
+        return [employee.first_name, employee.last_name].join(" ");
       });
-     // console.log(employeeList)
-   
+      // console.log(employeeList)
     }
-  
   );
 
   return employeeList;
-}
-
+};
 
 function getRole() {
   let row;
