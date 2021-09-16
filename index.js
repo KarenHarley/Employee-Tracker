@@ -1,5 +1,9 @@
 var inquirer = require("inquirer");
-const { readFromFile, readAndAppend, writeToFile } = require("../helpers");
+const { getNames } = require("./helper");
+/*
+Things to do:
+1. Make ALL functions in ES6 (arrow)
+*/
 function appMenu() {
   inquirer
     .prompt([
@@ -48,14 +52,19 @@ function appMenu() {
       }
     });
 
-  function viewAllEmployees() {
+  const viewAllEmployees =() => {
     /*
       THEN I am presented
        with a formatted table showing 
        department names and department ids
       */
   }
-  function addEmployee() {
+  const addEmployee = async () => {
+    const employeeInfo = await getNames
+
+  //  if(!employeeInfo.ok){
+  //    throw new Error("something is wrong")
+  //  }
     inquirer
       .prompt([
         {
@@ -102,17 +111,7 @@ function appMenu() {
           type: "list",
           name: "manager",
           message: "What is your employee's manager?",
-          choices: [
-            "None",
-            "John Doe",
-            "Peter Brown",
-            "Sara Johnson",
-            "Tom Chan",
-            "Maria Sanchez",
-            "Sandra Peterson",
-            "Mike Beckwith",
-            "Pamela Wessiman",
-          ],//to something like push("None")
+          choices: employeeInfo,//to something like push("None")
         },
       ])
       .then((answers) => {
@@ -126,6 +125,7 @@ function appMenu() {
         );
         appMenu(); //call the first questions
       });
+      
   }
   function updateEmployeeRole() {
     inquirer

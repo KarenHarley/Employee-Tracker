@@ -12,48 +12,22 @@ class myClass {
   }
   */
 
-const { response } = require("express");
-const express = require("express");
-const { createPromptModule } = require("inquirer");
-const mysql = require("mysql2");
 
-const PORT = process.env.PORT || 3001;
-const app = express();
+//const { createPromptModule } = require("inquirer");
+const db = require("../db/connection");
 
-// Express middleware for body parsing
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 
-// Connect to database
-const db = mysql.createConnection(
-  {
-    host: "localhost",
-    // MySQL username,
-    user: "root",
-    // MySQL password
-    password: "harleyHorse",
-    database: "employee_db",
-  },
-  console.log(`Connected to the employee_db database.`)
-);
-
-getNames = () => {
-  let employeeList;
-
-  return db.query(
-    "SELECT first_name,last_name FROM employee",
-    function (err, results) {
-     // console.log(results)
-      employeeList = results.map((employee) => {
-        return [employee.first_name, employee.last_name].join(" ");
+const getNames = () => {
+  return db
+    .promise()
+    .query("SELECT first_name,last_name FROM employee")
+    .then(([results]) => {
+      let employeeList = [];
+      results.map((employee) => {
+        employeeList.push([employee.first_name, employee.last_name].join(" "));
       });
-       console.log(employeeList)
       return employeeList;
-    }
-    
-  );
-
-  //return employeeList;
+    });
 };
 
 function getRole() {
@@ -70,10 +44,10 @@ function getRole() {
   });
   return row;
 }
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
 
 //getNames();
 //getRole();
-getNames().then((response)=> console.log(response));
+getNames().then((response) => console.log(response));
+console.log(getNames());
+
+module.exports = { getNames };
