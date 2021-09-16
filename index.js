@@ -1,5 +1,6 @@
 var inquirer = require("inquirer");
 const { getNames } = require("./helper");
+const cTable = require("console.table")
 /*
 Things to do:
 1. Make ALL functions in ES6 (arrow)
