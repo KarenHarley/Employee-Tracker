@@ -30,24 +30,22 @@ const getNames = () => {
     });
 };
 
-function getRole() {
-  let row;
-  db.query("SELECT title FROM role", function (err, results) {
-    //console.log(results); //will come back as json
-
-    //console.log(row)
-    function getRow(item) {
-      return [item.title];
-      // console.log([item.title])
-    }
-    row = results.map(getRow);
-  });
-  return row;
-}
+const getRole = () => {
+  return db
+    .promise()
+    .query("SELECT title FROM role")
+    .then(([results]) => {
+      let roleList = [];
+      results.map((role) => {
+        roleList.push([role.title]);
+      });
+      return roleList;
+    });
+};
 
 //getNames();
 //getRole();
 getNames().then((response) => console.log(response));
-console.log(getNames());
+console.log(getRole());
 
 module.exports = { getNames };
