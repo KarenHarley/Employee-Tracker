@@ -1,12 +1,17 @@
 var inquirer = require("inquirer");
-const { getNames, getRole, Employee} = require("./helper");
+const {
+  getNames,
+  getRole,
+  Employee,
+  viewAllEmployees
+} = require("./helper");
 const cTable = require("console.table");
 let employee;
 /*
 Things to do:
 1. Make ALL functions in ES6 (arrow)
 */
-function appMenu() {
+const appMenu = () => {
   inquirer
     .prompt([
       {
@@ -28,7 +33,7 @@ function appMenu() {
     .then((userChoice) => {
       switch (userChoice.memberChoice) {
         case "View All Employees":
-          viewAllEmployees();
+          viewAllEmployeesTable();
           break;
         case "Add Employee":
           addEmployee();
@@ -53,12 +58,14 @@ function appMenu() {
       }
     });
 
-  const viewAllEmployees = () => {
+  const viewAllEmployeesTable = async () => {
     /*
       THEN I am presented
        with a formatted table showing 
        department names and department ids
       */
+    //const viewAllEm = await viewAllEmployees;
+   // viewAllEm;
   };
   const addEmployee = async () => {
     const employeeInfo = await getNames;
@@ -108,14 +115,14 @@ function appMenu() {
           answers.role,
           answers.manager
         );
-          employee.getRole()//calling the first function
+        employee.getRole();
         console.log(
           `Added ${answers.firstName} ${answers.lastName} to the database!`
         );
         appMenu(); //call the first questions
       });
   };
-  function updateEmployeeRole() {
+  const updateEmployeeRole = () => {
     inquirer
       .prompt([
         {
@@ -146,23 +153,23 @@ function appMenu() {
         );
         appMenu(); //call the first questions
       });
-  }
-  function viewAllRoles() {
+  };
+  const viewAllRoles = () => {
     /*
    THEN I am presented with the job title, role id,
    the department that role belongs to,
    and the salary for that role
     */
-  }
-  function addRole() {}
-  function viewAllDepartments() {
+  };
+  const addRole = () => {};
+  const viewAllDepartments = () => {
     /*
    THEN I am presented with a formatted table 
    showing department names and department ids
     */
-  }
-  function addDepartment() {}
-}
+  };
+  const addDepartment = () => {};
+};
 
 appMenu();
 
