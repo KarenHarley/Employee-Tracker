@@ -1,4 +1,3 @@
-
 let roleId;
 let managerId;
 const db = require("../db/connection");
@@ -12,7 +11,6 @@ class Employee {
     this.manager = manager;
   }
   getRole() {
-
     return db
       .promise()
       .query("SELECT id,title FROM role")
@@ -20,29 +18,33 @@ class Employee {
         //console.log(results);
         let output = results.filter((role) => role.title == this.role);
         //console.log(output);
-        roleId = output[0].id
+        roleId = output[0].id;
         //console.log(roleId)
-        this.getManager()
+        this.getManager();
       });
   }
   getManager() {
-    if (this.manager === "None"){
-      this.manager = null
+    if (this.manager === "None") {
+      this.manager = null;
+    } else {
+      return db
+        .promise()
+        .query(
+          "SELECT id,CONCAT(first_name, ' ', last_name) AS complete_name FROM `employee`"
+        ) //CONCAT(first_name, ',', last_name) AS complete_name FROM `employee`;
+        .then(([results]) => {
+          // console.log(results);
+          let output = results.filter(
+            (people) => people.complete_name == this.manager
+          );
+          // console.log(output);
+          managerId = output[0].id;
+          // console.log(managerId)
+        });
     }
-    return db
-      .promise()
-      .query("SELECT id,CONCAT(first_name, ' ', last_name) AS complete_name FROM `employee`")//CONCAT(first_name, ',', last_name) AS complete_name FROM `employee`;
-      .then(([results]) => {
-       // console.log(results);
-        let output = results.filter((people) => people.complete_name == this.manager);
-       // console.log(output);
-        managerId = output[0].id
-       // console.log(managerId)
-        this.addEmployeeToDb()
-      });
+    this.addEmployeeToDb();
   }
   addEmployeeToDb() {
-
     const query =
       "INSERT INTO employee (first_name,last_name,role_id,manager_id) VALUES (?)";
     let values = [this.firstName, this.lastName, roleId, managerId]; //"this.first_name,this.lastName"; //(?)
@@ -50,7 +52,7 @@ class Employee {
       .promise()
       .query(query, [values])
       .then(([results]) => {
-       // console.log("worked");
+        // console.log("worked");
       });
   }
 }
