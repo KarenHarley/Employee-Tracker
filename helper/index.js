@@ -78,6 +78,7 @@ const getRole = () => {
       return roleList;
     });
 };
+
 //function to see all of the employees
 const viewAllEmployees = () => {
   return db
@@ -88,10 +89,11 @@ const viewAllEmployees = () => {
     .then(([results]) => {
       //onsole.log(results)
       const table = cTable.getTable(results);
-      console.log(table);
-      // return roleList;
+     // console.log(table);
+       return table;
     });
 };
+
 //employee = new Employee("Jack", "Ryan", "Software Engineer", "None").getRole(); //.addEmployeeToDb()
 //employee2 = new Employee("Daniel", "Spencer", "Account Manager", "Karen Villagomez").getRole(); //.addEmployeeToDb()
 //getNames();
@@ -100,5 +102,5 @@ const viewAllEmployees = () => {
 //getRole().then((response) => console.log(response));
 //console.log(roleId);
 
-viewAllEmployees();
-module.exports = { getNames, getRole, viewAllEmployees, Employee };
+//viewAllEmployees();
+module.exports = { getNames, getRole, Employee ,viewAllEmployees};

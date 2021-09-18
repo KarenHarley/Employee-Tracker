@@ -64,8 +64,9 @@ const appMenu = () => {
        with a formatted table showing 
        department names and department ids
       */
-    //const viewAllEm = await viewAllEmployees;
-   // viewAllEm;
+    const viewAllEm = await viewAllEmployees();
+    //viewAllEm;
+    console.log(viewAllEm)
   };
   const addEmployee = async () => {
     const employeeInfo = await getNames;
