@@ -4,6 +4,9 @@ const {
   getRole,
   EmployeeAdd,
   viewAllEmployees,
+  EmployeeRoleUpdate,
+  viewAllRolesFromDb,
+  viewAllDepartmentsFromDb
 } = require("./helper"); //// EmployeeRoleUpdate
 const cTable = require("console.table");
 let employee;
@@ -145,7 +148,7 @@ const appMenu = () => {
           answers.selectedRole
         );
         //call the function in the class
-        // employeeRoleUpdate.getId();
+         employeeRoleUpdate.getId();
         console.log(
           `Updated ${answers.selectedEmployee}'s role in the database!`
         );
@@ -153,19 +156,26 @@ const appMenu = () => {
       });
   };
 
-  const viewAllRoles = () => {
+  const viewAllRoles = async () => {
     /*
    THEN I am presented with the job title, role id,
    the department that role belongs to,
    and the salary for that role
     */
+   const viewAllRoles = await viewAllRolesFromDb();
+   //logging info (table)
+   console.log(viewAllRoles);
+   appMenu()
   };
   const addRole = () => {};
-  const viewAllDepartments = () => {
+  const viewAllDepartments = async () => {
     /*
    THEN I am presented with a formatted table 
    showing department names and department ids
     */
+   const viewAllDepartments= await viewAllDepartmentsFromDb()
+   console.log(viewAllDepartments);
+   appMenu()
   };
   const addDepartment = () => {};
 };

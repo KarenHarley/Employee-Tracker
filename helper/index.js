@@ -5,8 +5,6 @@ const db = require("../db/connection");
 //ask about the chaining in the functions
 const cTable = require("console.table");
 
-
-
 class EmployeeAdd {
   constructor(firstName, lastName, role, manager) {
     this.firstName = firstName;
@@ -57,12 +55,10 @@ class EmployeeAdd {
   }
 }
 
-
 class EmployeeRoleUpdate {
-
-  constructor(fullName,selectedRole) {
+  constructor(fullName, selectedRole) {
     this.fullName = fullName;
-    this.selectedRole =selectedRole;
+    this.selectedRole = selectedRole;
   }
   getId() {
     if (this.fullName === "None") {
@@ -74,14 +70,13 @@ class EmployeeRoleUpdate {
           "SELECT id,CONCAT(first_name, ' ', last_name) AS complete_name FROM `employee`"
         )
         .then(([results]) => {
-          console.log(results)
+          //  console.log(results);
           let output = results.filter(
-     
             (people) => people.complete_name == this.fullName
           );
-            console.log(output)
+          //  console.log(output);
           nameId = output[0].id;
-            console.log(nameId)
+          //   console.log(nameId);
           this.getRole();
         });
     }
@@ -96,26 +91,21 @@ class EmployeeRoleUpdate {
         let output = results.filter((role) => role.title == this.selectedRole);
         //extracts just the id
         roleId = output[0].id;
-        
-        console.log(output)
+
+        //  console.log(output);
         this.updateEmployeeToDb(); //calls next function
       });
   }
   updateEmployeeToDb() {
-    const query =
-      "UPDATE employee SET role_id = ? WHERE id = ?";
-    let values = [roleId,nameId];
-    return db.promise().query(query, [values]);
+    // const query =
+    //   "UPDATE employee SET role_id = ? WHERE id = ?";
+    // let values = [roleId,nameId];
+    // return db.promise().query(query,roleId, nameId);
+    return db
+      .promise()
+      .query("UPDATE employee SET role_id = ? WHERE id = ?", [roleId, nameId]);
   }
 }
-
-
-
-
-
-
-
-
 
 //function that returns the names of the Employee's in an array for use as a choice prompt
 const getNames = () => {
@@ -154,13 +144,38 @@ const viewAllEmployees = () => {
     .then(([results]) => {
       //console.log(results)
       const table = cTable.getTable(results);
-     // console.log(table);
-       return table;
+      // console.log(table);
+      return table;
     });
 };
 
+const viewAllRolesFromDb = () => {
+  return db
+    .promise()
+    .query(
+      "SELECT role.id,role.title,role.salary,department.name AS department FROM role JOIN department ON department.id = role.department_id "
+    )
+    .then(([results]) => {
+      //console.log(results)
+      const table = cTable.getTable(results);
+      // console.log(table);
+      return table;
+    });
+};
+
+const viewAllDepartmentsFromDb = () => {
+  return db
+    .promise()
+    .query("SELECT * FROM department")
+    .then(([results]) => {
+      //console.log(results)
+      const table = cTable.getTable(results);
+      // console.log(table);
+      return table;
+    });
+};
 //employee = new Employee("Jack", "Ryan", "Software Engineer", "None").getRole(); //.addEmployeeToDb()
-employee2 = new EmployeeRoleUpdate("Daniel Spencer","Sales Lead").getId(); //.addEmployeeToDb()
+//employee2 = new EmployeeRoleUpdate("Daniel Spencer", "Sales Lead").getId(); //.addEmployeeToDb()
 //getNames();
 //getRole();
 //getNames().then((response) => console.log(response));
@@ -168,4 +183,12 @@ employee2 = new EmployeeRoleUpdate("Daniel Spencer","Sales Lead").getId(); //.ad
 //console.log(roleId);
 
 //viewAllEmployees();
-module.exports = { getNames, getRole, EmployeeAdd ,viewAllEmployees};//EmployeeRoleUpdate
+module.exports = {
+  getNames,
+  getRole,
+  EmployeeAdd,
+  viewAllEmployees,
+  EmployeeRoleUpdate,
+  viewAllRolesFromDb,
+  viewAllDepartmentsFromDb,
+}; //EmployeeRoleUpdate
