@@ -209,7 +209,7 @@ const appMenu = () => {
         //call the function in the class
         addNewRole.getDept();
         console.log(
-          `Created ${answers.nameDepartment} as a new role in the database!`
+          `Created ${answers.nameRole} as a new role in the database!`
         );
         appMenu(); //call the first questions
       });

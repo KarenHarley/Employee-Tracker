@@ -3,7 +3,6 @@ let managerId;
 let nameId;
 let deptId;
 const db = require("../db/connection");
-//ask about the chaining in the functions
 const cTable = require("console.table");
 
 class EmployeeAdd {
@@ -25,6 +24,8 @@ class EmployeeAdd {
         roleId = output[0].id;
 
         this.getManager(); //calls next function
+      }).catch((error) => {
+        console.log(error);
       });
   }
   getManager() {
@@ -45,6 +46,8 @@ class EmployeeAdd {
           managerId = output[0].id;
 
           this.addEmployeeToDb();
+        }).catch((error) => {
+          console.log(error);
         });
     }
   }
@@ -52,7 +55,9 @@ class EmployeeAdd {
     const query =
       "INSERT INTO employee (first_name,last_name,role_id,manager_id) VALUES (?)";
     let values = [this.firstName, this.lastName, roleId, managerId];
-    return db.promise().query(query, [values]);
+    return db.promise().query(query, [values]).catch((error) => {
+      console.log(error);
+    });
   }
 }
 
@@ -62,9 +67,7 @@ class EmployeeRoleUpdate {
     this.selectedRole = selectedRole;
   }
   getId() {
-    if (this.fullName === "None") {
-      //appMenu() //if the select none quit an call the other function app or something
-    } else {
+    
       return db
         .promise()
         .query(
@@ -79,8 +82,10 @@ class EmployeeRoleUpdate {
           nameId = output[0].id;
           //   console.log(nameId);
           this.getRole();
+        }).catch((error) => {
+          console.log(error);
         });
-    }
+    
   }
   getRole() {
     //this function gets the id for the selected role
@@ -95,12 +100,16 @@ class EmployeeRoleUpdate {
 
         //  console.log(output);
         this.updateEmployeeToDb(); //calls next function
+      }).catch((error) => {
+        console.log(error);
       });
   }
   updateEmployeeToDb() {
     return db
       .promise()
-      .query("UPDATE employee SET role_id = ? WHERE id = ?", [roleId, nameId]);
+      .query("UPDATE employee SET role_id = ? WHERE id = ?", [roleId, nameId]).catch((error) => {
+        console.log(error);
+      });
   }
 }
 
@@ -112,7 +121,9 @@ class EmployeeAddDepartment {
   createDeptInDb() {
     return db
       .promise()
-      .query("INSERT INTO department (name) VALUES (?)", this.department);
+      .query("INSERT INTO department (name) VALUES (?)", this.department).catch((error) => {
+        console.log(error);
+      });
   }
 }
 //AddNewRole
@@ -134,16 +145,20 @@ class AddNewRole {
         deptId = output[0].id;
 
         this.createRoleInDb(); //calls next function
+      }).catch((error) => {
+        console.log(error);
       });
   }
   createRoleInDb() {
+    let values = [this.name, this.salary, deptId];
     return db
       .promise()
       .query("INSERT INTO role (title,salary,department_id) VALUES (?)", [
-        this.name,
-        this.salary,
-        deptId,
-      ]);
+        values,
+      ])
+      .catch((error) => {
+        console.log(error);
+      });
   }
 }
 
@@ -246,5 +261,5 @@ module.exports = {
   viewAllDepartmentsFromDb,
   EmployeeAddDepartment,
   getDepartment,
-  AddNewRole
+  AddNewRole,
 };
