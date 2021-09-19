@@ -7,6 +7,9 @@ const {
   EmployeeRoleUpdate,
   viewAllRolesFromDb,
   viewAllDepartmentsFromDb,
+  EmployeeAddDepartment,
+  getDepartment,
+  AddNewRole
 } = require("./helper"); 
 
 /*
@@ -163,13 +166,86 @@ const appMenu = () => {
     console.log(viewAllRoles);
     appMenu();
   };
-  const addRole = () => {};
+  const addRole = async () => {
+    const viewAllDept = await getDepartment();
+    inquirer
+
+      .prompt([
+        {
+          type: "input",
+          name: "nameRole",
+          message: "What is the name of the Role?",
+          validate: (answer) => {
+            if (answer !== "") {
+              return true;
+            }
+            return "Please enter at least one character.";
+          },
+        },
+        {
+          type: "input",
+          name: "salaryRole",
+          message: "What is the Salary of the Role?",
+          validate: (answer) => {
+            if (answer !== "") {
+              return true;
+            }
+            return "Please enter at least one character.";
+          },
+        },
+        {
+          type: "list",
+          name: "selectedDept",
+          message: "Which department does this role belong to?",
+          choices: viewAllDept,
+        },
+      ])
+      .then((answers) => {
+        const addNewRole = new AddNewRole(
+          answers.nameRole,
+          answers.salaryRole,
+          answers.selectedDept,
+        );
+        //call the function in the class
+        addNewRole.getDept();
+        console.log(
+          `Created ${answers.nameDepartment} as a new role in the database!`
+        );
+        appMenu(); //call the first questions
+      });
+  };
   const viewAllDepartments = async () => {
     const viewAllDepartments = await viewAllDepartmentsFromDb();
     console.log(viewAllDepartments);
     appMenu();
   };
-  const addDepartment = () => {};
+  const addDepartment = () => {
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "nameDepartment",
+          message: "What is the name of the department?",
+          validate: (answer) => {
+            if (answer !== "") {
+              return true;
+            }
+            return "Please enter at least one character.";
+          },
+        },
+      ])
+      .then((answers) => {
+        const employeeAddDepartment = new EmployeeAddDepartment(
+          answers.nameDepartment
+        );
+        //call the function in the class
+        employeeAddDepartment.createDeptInDb();
+        console.log(
+          `Created ${answers.nameDepartment} as a new department in the database!`
+        );
+        appMenu(); //call the first questions
+      });
+  };
 };
 
 appMenu();

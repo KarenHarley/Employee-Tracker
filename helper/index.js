@@ -1,6 +1,7 @@
 let roleId;
 let managerId;
 let nameId;
+let deptId;
 const db = require("../db/connection");
 //ask about the chaining in the functions
 const cTable = require("console.table");
@@ -103,6 +104,51 @@ class EmployeeRoleUpdate {
   }
 }
 
+class EmployeeAddDepartment {
+  constructor(department) {
+    this.department = department;
+  }
+
+  createDeptInDb() {
+    return db
+      .promise()
+      .query("INSERT INTO department (name) VALUES (?)", this.department);
+  }
+}
+//AddNewRole
+class AddNewRole {
+  constructor(name, salary, department) {
+    this.name = name;
+    this.salary = salary;
+    this.department = department;
+  }
+  getDept() {
+    //this function gets the id for the selected dept
+    return db
+      .promise()
+      .query("SELECT id,name FROM department")
+      .then(([results]) => {
+        //gets matching department (name) to the selected dept
+        let output = results.filter((dept) => dept.name == this.department);
+        //extracts just the id
+        deptId = output[0].id;
+
+        this.createRoleInDb(); //calls next function
+      });
+  }
+  createRoleInDb() {
+    return db
+      .promise()
+      .query("INSERT INTO role (title,salary,department_id) VALUES (?)", [
+        this.name,
+        this.salary,
+        deptId,
+      ]);
+  }
+}
+
+//simple functions that don't take in user input
+
 //function that returns the names of the Employee's in an array for use as a choice prompt
 const getNames = () => {
   return db
@@ -129,7 +175,19 @@ const getRole = () => {
       return roleList;
     });
 };
-
+//function the returns the departments as an array for use as a choice prompt
+const getDepartment = () => {
+  return db
+    .promise()
+    .query("SELECT name FROM department")
+    .then(([results]) => {
+      let deptList = [];
+      results.map((dept) => {
+        deptList.push([dept.name].join(" "));
+      });
+      return deptList;
+    });
+};
 //function to see all of the employees
 const viewAllEmployees = () => {
   return db
@@ -178,7 +236,6 @@ const viewAllDepartmentsFromDb = () => {
 //getRole().then((response) => console.log(response));
 //console.log(roleId);
 
-
 module.exports = {
   getNames,
   getRole,
@@ -187,4 +244,7 @@ module.exports = {
   EmployeeRoleUpdate,
   viewAllRolesFromDb,
   viewAllDepartmentsFromDb,
-}; 
+  EmployeeAddDepartment,
+  getDepartment,
+  AddNewRole
+};
