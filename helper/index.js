@@ -6,7 +6,7 @@ let selectedEmployeeId;
 let selectedManagerId;
 const db = require("../db/connection");
 const cTable = require("console.table");
-
+//adds employee
 class EmployeeAdd {
   constructor(firstName, lastName, role, manager) {
     this.firstName = firstName;
@@ -62,7 +62,7 @@ class EmployeeAdd {
     });
   }
 }
-
+//update role
 class EmployeeRoleUpdate {
   constructor(fullName, selectedRole) {
     this.fullName = fullName;
@@ -76,13 +76,13 @@ class EmployeeRoleUpdate {
           "SELECT id,CONCAT(first_name, ' ', last_name) AS complete_name FROM `employee`"
         )
         .then(([results]) => {
-          //  console.log(results);
+          
           let output = results.filter(
             (people) => people.complete_name == this.fullName
           );
-          //  console.log(output);
+          
           nameId = output[0].id;
-          //   console.log(nameId);
+        
           this.getRole();
         }).catch((error) => {
           console.log(error);
@@ -100,7 +100,7 @@ class EmployeeRoleUpdate {
         //extracts just the id
         roleId = output[0].id;
 
-        //  console.log(output);
+       
         this.updateEmployeeToDb(); //calls next function
       }).catch((error) => {
         console.log(error);
@@ -114,7 +114,7 @@ class EmployeeRoleUpdate {
       });
   }
 }
-
+//update manager
 class EmployeeManagerUpdate {
   constructor(fullName, selectedManager) {
     this.fullName = fullName;
@@ -128,13 +128,13 @@ class EmployeeManagerUpdate {
           "SELECT id,CONCAT(first_name, ' ', last_name) AS complete_name FROM `employee`"
         )
         .then(([results]) => {
-          //  console.log(results);
+        
           let output = results.filter(
             (people) => people.complete_name == this.fullName
           );
-          //  console.log(output);
+          
           selectedEmployeeId = output[0].id;
-            // console.log(selectedEmployeeId);
+            
           this.getManagerId();
         }).catch((error) => {
           console.log(error);
@@ -148,20 +148,20 @@ class EmployeeManagerUpdate {
           "SELECT id,CONCAT(first_name, ' ', last_name) AS complete_name FROM `employee`"
         )
         .then(([results]) => {
-          //  console.log(results);
+         
           let output = results.filter(
             (people) => people.complete_name == this.selectedManager
           );
-          //  console.log(output);
+          
           selectedManagerId = output[0].id;
-           //  console.log(selectedManagerId);
+          
           this.updateManagerToDb()
         }).catch((error) => {
           console.log(error);
         });
   }
   updateManagerToDb() {
-   //console.log(selectedManagerId);
+  
     return db
       .promise()
       .query("UPDATE employee SET manager_id = ? WHERE id = ?", [selectedManagerId, selectedEmployeeId]).catch((error) => {
@@ -271,13 +271,13 @@ const viewAllEmployees = () => {
       "SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;"
     )
     .then(([results]) => {
-      //console.log(results)
+      
       const table = cTable.getTable(results);
-      // console.log(table);
+     
       return table;
     });
 };
-
+//see all of the roles
 const viewAllRolesFromDb = () => {
   return db
     .promise()
@@ -285,31 +285,25 @@ const viewAllRolesFromDb = () => {
       "SELECT role.id,role.title,role.salary,department.name AS department FROM role JOIN department ON department.id = role.department_id "
     )
     .then(([results]) => {
-      //console.log(results)
+      
       const table = cTable.getTable(results);
-      // console.log(table);
+      
       return table;
     });
 };
-
+//see all of the departments 
 const viewAllDepartmentsFromDb = () => {
   return db
     .promise()
     .query("SELECT * FROM department")
     .then(([results]) => {
-      //console.log(results)
+      
       const table = cTable.getTable(results);
-      // console.log(table);
+      
       return table;
     });
 };
-//employee = new Employee("Jack", "Ryan", "Software Engineer", "None").getRole(); //.addEmployeeToDb()
-//employee2 = new EmployeeManagerUpdate("John Doe", "Peter Brown").getId(); //.addEmployeeToDb()
-//getNames();
-//getRole();
-//getNames().then((response) => console.log(response));
-//getRole().then((response) => console.log(response));
-//console.log(roleId);
+
 
 module.exports = {
   getNames,
