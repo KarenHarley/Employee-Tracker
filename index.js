@@ -63,6 +63,7 @@ const appMenu = () => {
     const viewAllEm = await viewAllEmployees();
     //logging info (table)
     console.log(viewAllEm);
+    appMenu()
   };
   const addEmployee = async () => {
     const employeeInfo = await getNames();

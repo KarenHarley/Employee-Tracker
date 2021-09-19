@@ -57,7 +57,7 @@ class EmployeeAdd {
   }
 }
 
-/*
+
 class EmployeeRoleUpdate {
 
   constructor(fullName,selectedRole) {
@@ -97,7 +97,7 @@ class EmployeeRoleUpdate {
         //extracts just the id
         roleId = output[0].id;
         
-
+        console.log(output)
         this.updateEmployeeToDb(); //calls next function
       });
   }
@@ -108,7 +108,7 @@ class EmployeeRoleUpdate {
     return db.promise().query(query, [values]);
   }
 }
-*/
+
 
 
 
@@ -160,7 +160,7 @@ const viewAllEmployees = () => {
 };
 
 //employee = new Employee("Jack", "Ryan", "Software Engineer", "None").getRole(); //.addEmployeeToDb()
-//employee2 = new EmployeeRoleUpdate("Daniel Spencer","Sales Lead").getId(); //.addEmployeeToDb()
+employee2 = new EmployeeRoleUpdate("Daniel Spencer","Sales Lead").getId(); //.addEmployeeToDb()
 //getNames();
 //getRole();
 //getNames().then((response) => console.log(response));
