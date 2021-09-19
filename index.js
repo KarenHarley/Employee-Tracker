@@ -4,8 +4,7 @@ const {
   getRole,
   EmployeeAdd,
   viewAllEmployees,
-  EmployeeRoleUpdate
-} = require("./helper");
+} = require("./helper"); //// EmployeeRoleUpdate
 const cTable = require("console.table");
 let employee;
 /*
@@ -120,6 +119,7 @@ const appMenu = () => {
         appMenu(); //call the first questions
       });
   };
+
   const updateEmployeeRole = async () => {
     const employeeInfo = await getNames();
     const roleInfo = await getRole();
@@ -129,29 +129,29 @@ const appMenu = () => {
           type: "list",
           name: "selectedEmployee",
           message: "Select an employee who's role you want to update",
-          choices: employeeInfo
+          choices: employeeInfo,
         },
         {
           type: "list",
           name: "selectedRole",
           message: "Which role do you want to assign the selected employee?",
-          choices: roleInfo
+          choices: roleInfo,
         },
       ])
       .then((answers) => {
         const employeeRoleUpdate = new EmployeeRoleUpdate(
           answers.selectedEmployee,
           answers.selectedRole
-          
         );
         //call the function in the class
-        employeeRoleUpdate.getId();
+        // employeeRoleUpdate.getId();
         console.log(
           `Updated ${answers.selectedEmployee}'s role in the database!`
         );
         appMenu(); //call the first questions
       });
   };
+
   const viewAllRoles = () => {
     /*
    THEN I am presented with the job title, role id,
@@ -171,7 +171,7 @@ const appMenu = () => {
 
 appMenu();
 
-module.exports = { employee };
+//module.exports = { employee };
 /*
   .then((answers) => {
     // Use user feedback for... whatever!!
