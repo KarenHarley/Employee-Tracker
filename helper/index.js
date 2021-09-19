@@ -2,6 +2,8 @@ let roleId;
 let managerId;
 let nameId;
 let deptId;
+let selectedEmployeeId;
+let selectedManagerId;
 const db = require("../db/connection");
 const cTable = require("console.table");
 
@@ -113,6 +115,60 @@ class EmployeeRoleUpdate {
   }
 }
 
+class EmployeeManagerUpdate {
+  constructor(fullName, selectedManager) {
+    this.fullName = fullName;
+    this.selectedManager = selectedManager;
+  }
+  getId() {
+    
+      return db
+        .promise()
+        .query(
+          "SELECT id,CONCAT(first_name, ' ', last_name) AS complete_name FROM `employee`"
+        )
+        .then(([results]) => {
+          //  console.log(results);
+          let output = results.filter(
+            (people) => people.complete_name == this.fullName
+          );
+          //  console.log(output);
+          selectedEmployeeId = output[0].id;
+          //   console.log(nameId);
+          this.getManagerId();
+        }).catch((error) => {
+          console.log(error);
+        });
+    
+  }
+  getManagerId() {
+    return db
+        .promise()
+        .query(
+          "SELECT id,CONCAT(first_name, ' ', last_name) AS complete_name FROM `employee`"
+        )
+        .then(([results]) => {
+          //  console.log(results);
+          let output = results.filter(
+            (people) => people.complete_name == this.selectedManager
+          );
+          //  console.log(output);
+          selectedManagerId = output[0].id;
+          //   console.log(nameId);
+          this.updateManagerToDb()
+        }).catch((error) => {
+          console.log(error);
+        });
+  }
+  updateManagerToDb() {
+    return db
+      .promise()
+      .query("UPDATE employee SET manager_id = ? WHERE id = ?", [managerId, selectedEmployeeId]).catch((error) => {
+        console.log(error);
+      });
+  }
+}
+
 class EmployeeAddDepartment {
   constructor(department) {
     this.department = department;
@@ -165,15 +221,18 @@ class AddNewRole {
 //simple functions that don't take in user input
 
 //function that returns the names of the Employee's in an array for use as a choice prompt
-const getNames = () => {
+const getNames = (incNone) => {
   return db
     .promise()
     .query("SELECT first_name,last_name FROM employee")
     .then(([results]) => {
-      let employeeList = ["None"];
+      let employeeList = [];
       results.map((employee) => {
         employeeList.push([employee.first_name, employee.last_name].join(" "));
       });
+      if(incNone){
+        employeeList.push("None")
+      }
       return employeeList;
     });
 };
@@ -262,4 +321,5 @@ module.exports = {
   EmployeeAddDepartment,
   getDepartment,
   AddNewRole,
+  EmployeeManagerUpdate
 };

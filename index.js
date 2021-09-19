@@ -9,7 +9,8 @@ const {
   viewAllDepartmentsFromDb,
   EmployeeAddDepartment,
   getDepartment,
-  AddNewRole
+  AddNewRole,
+  EmployeeManagerUpdate
 } = require("./helper"); 
 
 /*
@@ -31,6 +32,7 @@ const appMenu = () => {
           "Add Role",
           "View All Departments",
           "Add Department",
+          "Update Employee Manager",
           "Quit",
         ],
       },
@@ -58,6 +60,9 @@ const appMenu = () => {
         case "Add Department":
           addDepartment();
           break;
+          case "Update Employee Manager":
+          updateEmployeeManager();
+          break;
         default:
         //Quit somehow (look at how to do it)
         //process.exit
@@ -72,7 +77,7 @@ const appMenu = () => {
     appMenu();
   };
   const addEmployee = async () => {
-    const employeeInfo = await getNames();
+    const employeeInfo = await getNames(true);
     const roleInfo = await getRole();
 
     inquirer
@@ -109,7 +114,7 @@ const appMenu = () => {
           type: "list",
           name: "manager",
           message: "What is your employee's manager?",
-          choices: employeeInfo,
+          choices: employeeInfo,//here adds none
         },
       ])
       .then((answers) => {
@@ -242,6 +247,36 @@ const appMenu = () => {
         employeeAddDepartment.createDeptInDb();
         console.log(
           `Created ${answers.nameDepartment} as a new department in the database!`
+        );
+        appMenu(); //call the first questions
+      });
+  };
+  const updateEmployeeManager = async () => {
+    const employeeInfo = await getNames();
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "selectedEmployee",
+          message: "Select an employee who's manager you want to update",
+          choices: employeeInfo,
+        },
+        {
+          type: "list",
+          name: "selectedManager",
+          message: "Select the new manager for the employee",
+          choices: employeeInfo,
+        },
+      ])
+      .then((answers) => {
+        const employeeManagerUpdate = new EmployeeManagerUpdate(
+          answers.selectedEmployee,
+          answers.selectedManager
+        );
+        //call the function in the class
+        employeeManagerUpdate.getId();
+        console.log(
+          `Updated ${answers.selectedEmployee}'s manager in the database!`
         );
         appMenu(); //call the first questions
       });
