@@ -97,10 +97,6 @@ class EmployeeRoleUpdate {
       });
   }
   updateEmployeeToDb() {
-    // const query =
-    //   "UPDATE employee SET role_id = ? WHERE id = ?";
-    // let values = [roleId,nameId];
-    // return db.promise().query(query,roleId, nameId);
     return db
       .promise()
       .query("UPDATE employee SET role_id = ? WHERE id = ?", [roleId, nameId]);
@@ -182,7 +178,7 @@ const viewAllDepartmentsFromDb = () => {
 //getRole().then((response) => console.log(response));
 //console.log(roleId);
 
-//viewAllEmployees();
+
 module.exports = {
   getNames,
   getRole,
@@ -191,4 +187,4 @@ module.exports = {
   EmployeeRoleUpdate,
   viewAllRolesFromDb,
   viewAllDepartmentsFromDb,
-}; //EmployeeRoleUpdate
+}; 

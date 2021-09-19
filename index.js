@@ -6,10 +6,9 @@ const {
   viewAllEmployees,
   EmployeeRoleUpdate,
   viewAllRolesFromDb,
-  viewAllDepartmentsFromDb
-} = require("./helper"); //// EmployeeRoleUpdate
-const cTable = require("console.table");
-let employee;
+  viewAllDepartmentsFromDb,
+} = require("./helper"); 
+
 /*
 Things to do:
 1. Make ALL functions in ES6 (arrow)
@@ -57,7 +56,8 @@ const appMenu = () => {
           addDepartment();
           break;
         default:
-        //Quit somehow
+        //Quit somehow (look at how to do it)
+        //process.exit
       }
     });
 
@@ -66,7 +66,7 @@ const appMenu = () => {
     const viewAllEm = await viewAllEmployees();
     //logging info (table)
     console.log(viewAllEm);
-    appMenu()
+    appMenu();
   };
   const addEmployee = async () => {
     const employeeInfo = await getNames();
@@ -110,13 +110,13 @@ const appMenu = () => {
         },
       ])
       .then((answers) => {
-        employee = new EmployeeAdd(
+        const employee = new EmployeeAdd(
           answers.firstName,
           answers.lastName,
           answers.role,
           answers.manager
         );
-        employee.getRole();
+        employee.getRole(); //call function
         console.log(
           `Added ${answers.firstName} ${answers.lastName} to the database!`
         );
@@ -148,7 +148,7 @@ const appMenu = () => {
           answers.selectedRole
         );
         //call the function in the class
-         employeeRoleUpdate.getId();
+        employeeRoleUpdate.getId();
         console.log(
           `Updated ${answers.selectedEmployee}'s role in the database!`
         );
@@ -157,37 +157,21 @@ const appMenu = () => {
   };
 
   const viewAllRoles = async () => {
-    /*
-   THEN I am presented with the job title, role id,
-   the department that role belongs to,
-   and the salary for that role
-    */
-   const viewAllRoles = await viewAllRolesFromDb();
-   //logging info (table)
-   console.log(viewAllRoles);
-   appMenu()
+  
+    const viewAllRoles = await viewAllRolesFromDb();
+    //logging info (table)
+    console.log(viewAllRoles);
+    appMenu();
   };
   const addRole = () => {};
   const viewAllDepartments = async () => {
-    /*
-   THEN I am presented with a formatted table 
-   showing department names and department ids
-    */
-   const viewAllDepartments= await viewAllDepartmentsFromDb()
-   console.log(viewAllDepartments);
-   appMenu()
+    const viewAllDepartments = await viewAllDepartmentsFromDb();
+    console.log(viewAllDepartments);
+    appMenu();
   };
   const addDepartment = () => {};
 };
 
 appMenu();
 
-//module.exports = { employee };
-/*
-  .then((answers) => {
-    // Use user feedback for... whatever!!
-  })
-  .catch((error) => {
-    console.log(error)
-  });
-  */
+
