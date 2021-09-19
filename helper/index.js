@@ -134,7 +134,7 @@ class EmployeeManagerUpdate {
           );
           //  console.log(output);
           selectedEmployeeId = output[0].id;
-          //   console.log(nameId);
+            // console.log(selectedEmployeeId);
           this.getManagerId();
         }).catch((error) => {
           console.log(error);
@@ -154,16 +154,17 @@ class EmployeeManagerUpdate {
           );
           //  console.log(output);
           selectedManagerId = output[0].id;
-          //   console.log(nameId);
+           //  console.log(selectedManagerId);
           this.updateManagerToDb()
         }).catch((error) => {
           console.log(error);
         });
   }
   updateManagerToDb() {
+   //console.log(selectedManagerId);
     return db
       .promise()
-      .query("UPDATE employee SET manager_id = ? WHERE id = ?", [managerId, selectedEmployeeId]).catch((error) => {
+      .query("UPDATE employee SET manager_id = ? WHERE id = ?", [selectedManagerId, selectedEmployeeId]).catch((error) => {
         console.log(error);
       });
   }
@@ -303,7 +304,7 @@ const viewAllDepartmentsFromDb = () => {
     });
 };
 //employee = new Employee("Jack", "Ryan", "Software Engineer", "None").getRole(); //.addEmployeeToDb()
-//employee2 = new EmployeeRoleUpdate("Daniel Spencer", "Sales Lead").getId(); //.addEmployeeToDb()
+//employee2 = new EmployeeManagerUpdate("John Doe", "Peter Brown").getId(); //.addEmployeeToDb()
 //getNames();
 //getRole();
 //getNames().then((response) => console.log(response));
