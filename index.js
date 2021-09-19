@@ -2,8 +2,9 @@ var inquirer = require("inquirer");
 const {
   getNames,
   getRole,
-  Employee,
-  viewAllEmployees
+  EmployeeAdd,
+  viewAllEmployees,
+  EmployeeRoleUpdate
 } = require("./helper");
 const cTable = require("console.table");
 let employee;
@@ -59,18 +60,14 @@ const appMenu = () => {
     });
 
   const viewAllEmployeesTable = async () => {
-    /*
-      THEN I am presented
-       with a formatted table showing 
-       department names and department ids
-      */
+    /*table shows department names, salary etc using several join*/
     const viewAllEm = await viewAllEmployees();
-    //viewAllEm;
-    console.log(viewAllEm)
+    //logging info (table)
+    console.log(viewAllEm);
   };
   const addEmployee = async () => {
-    const employeeInfo = await getNames;
-    const roleInfo = await getRole;
+    const employeeInfo = await getNames();
+    const roleInfo = await getRole();
 
     inquirer
       .prompt([
@@ -110,7 +107,7 @@ const appMenu = () => {
         },
       ])
       .then((answers) => {
-        employee = new Employee(
+        employee = new EmployeeAdd(
           answers.firstName,
           answers.lastName,
           answers.role,
@@ -123,32 +120,32 @@ const appMenu = () => {
         appMenu(); //call the first questions
       });
   };
-  const updateEmployeeRole = () => {
+  const updateEmployeeRole = async () => {
+    const employeeInfo = await getNames();
+    const roleInfo = await getRole();
     inquirer
       .prompt([
         {
           type: "list",
           name: "selectedEmployee",
           message: "Select an employee who's role you want to update",
-          choices: [
-            "None",
-            "John Doe",
-            "Peter Brown",
-            "Sara Johnson",
-            "Tom Chan",
-            "Maria Sanchez",
-            "Sandra Peterson",
-            "Mike Beckwith",
-            "Pamela Wessiman",
-          ],
+          choices: employeeInfo
+        },
+        {
+          type: "list",
+          name: "selectedRole",
+          message: "Which role do you want to assign the selected employee?",
+          choices: roleInfo
         },
       ])
       .then((answers) => {
-        //const employee = new Employee(
-        //  answers.engineerName
-        //create things for the object (properties)
-        //);
-
+        const employeeRoleUpdate = new EmployeeRoleUpdate(
+          answers.selectedEmployee,
+          answers.selectedRole
+          
+        );
+        //call the function in the class
+        employeeRoleUpdate.getId();
         console.log(
           `Updated ${answers.selectedEmployee}'s role in the database!`
         );
