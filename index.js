@@ -65,7 +65,7 @@ const appMenu = () => {
           break;
         default:
         //Quit somehow (look at how to do it)
-        //process.exit
+        process.exit
       }
     });
 
