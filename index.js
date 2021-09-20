@@ -1,4 +1,5 @@
 var inquirer = require("inquirer");
+const db = require("./db/connection");
 const {
   getNames,
   getRole,
@@ -66,8 +67,9 @@ const appMenu = () => {
         case "Quit":
           //Quit somehow (look at how to do it)
           //process.exit
-          return console.log("Bye");
-         // WantToExit();
+          console.log("Bye");
+          db.end()
+          
       }
     });
 };
@@ -280,6 +282,6 @@ const updateEmployeeManager = async () => {
       appMenu(); //call the first questions
     });
 };
-const WantToExit = () => console.log("bye");
+
 
 appMenu();
