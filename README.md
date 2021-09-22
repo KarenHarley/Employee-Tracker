@@ -44,7 +44,7 @@ This command-line application that manages a company's employee database, using 
   ## Contribute
   If you would like to contribute please contact me.
   ## Walkthough
-  https://drive.google.com/file/d/14vUxNb0tMYzl13psOufpswQ1zbL7X3pw/view
+  https://drive.google.com/file/d/1Q5gK_gZlnFQEQ8DP4a1DLxAJ9Fbt1yZg/view?usp=sharing
   ## Questions
   To reach me please contact me in the email address below
 
