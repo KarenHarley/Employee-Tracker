@@ -109,7 +109,6 @@ const addEmployee = async () => {
       },
     ])
     .then((answers) => {
-      
 
       DB.addEmployeeToDb(
         answers.firstName,
@@ -143,10 +142,6 @@ const updateEmployeeRole = async () => {
       },
     ])
     .then((answers) => {
-     // const employeeRoleUpdate = new EmployeeRoleUpdate(
-     //   answers.selectedEmployee,
-     //   answers.selectedRole
-    // );
       //call the function in the class
       DB.updateEmployeeToDb(answers.selectedRole,answers.selectedEmployee);
       console.log(

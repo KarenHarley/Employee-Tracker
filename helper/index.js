@@ -50,7 +50,7 @@ class DB {
   }
 
   //AddNewRole
- 
+
   createRoleInDb(name, salary, deptId) {
     let values = [name, salary, deptId];
     return db
@@ -62,8 +62,6 @@ class DB {
         console.log(error);
       });
   }
-
-
 
   //function that returns the names of the Employee's in an array for use as a choice prompt
   getNames = (incNone) => {
@@ -79,7 +77,7 @@ class DB {
           });
         });
         if (incNone) {
-          employeeList.push("None");
+          employeeList.push({ name: "None", value: null });
         }
         return employeeList;
       });
