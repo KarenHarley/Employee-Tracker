@@ -1,18 +1,6 @@
 var inquirer = require("inquirer");
 const db = require("./db/connection");
-const {
-  getNames,
-  getRole,
-  EmployeeAdd,
-  viewAllEmployees,
-  EmployeeRoleUpdate,
-  viewAllRolesFromDb,
-  viewAllDepartmentsFromDb,
-  EmployeeAddDepartment,
-  getDepartment,
-  AddNewRole,
-  EmployeeManagerUpdate,
-} = require("./helper");
+const DB  = require("./helper");
 
 /*
 Things to do:
@@ -68,21 +56,24 @@ const appMenu = () => {
           //Quit somehow (look at how to do it)
           //process.exit
           console.log("Bye");
-          db.end()
-          
+          db.end();
       }
     });
 };
 const viewAllEmployeesTable = async () => {
   /*table shows department names, salary etc using several join*/
-  const viewAllEm = await viewAllEmployees();
+  const viewAllEm = await DB.viewAllEmployees();
   //logging info (table)
   console.log(viewAllEm);
+  /*
+DB.getRole().then((data) => {console.log(data)});
+  */
   appMenu();
 };
 const addEmployee = async () => {
-  const employeeInfo = await getNames(true);
-  const roleInfo = await getRole();
+  //handle the none
+  const employeeInfo = await DB.getNames(true);
+  const roleInfo = await DB.getRole();
 
   inquirer
     .prompt([
@@ -118,17 +109,18 @@ const addEmployee = async () => {
         type: "list",
         name: "manager",
         message: "What is your employee's manager?",
-        choices: employeeInfo, //here adds none
+        choices: employeeInfo, //here adds "none"
       },
     ])
     .then((answers) => {
-      const employee = new EmployeeAdd(
+      
+
+      DB.addEmployeeToDb(
         answers.firstName,
         answers.lastName,
         answers.role,
         answers.manager
-      );
-      employee.getRole(); //call function
+      ); //call function
       console.log(
         `Added ${answers.firstName} ${answers.lastName} to the database!`
       );
@@ -137,8 +129,8 @@ const addEmployee = async () => {
 };
 
 const updateEmployeeRole = async () => {
-  const employeeInfo = await getNames();
-  const roleInfo = await getRole();
+  const employeeInfo = await DB.getNames();
+  const roleInfo = await DB.getRole();
   inquirer
     .prompt([
       {
@@ -155,27 +147,27 @@ const updateEmployeeRole = async () => {
       },
     ])
     .then((answers) => {
-      const employeeRoleUpdate = new EmployeeRoleUpdate(
-        answers.selectedEmployee,
-        answers.selectedRole
-      );
+     // const employeeRoleUpdate = new EmployeeRoleUpdate(
+     //   answers.selectedEmployee,
+     //   answers.selectedRole
+    // );
       //call the function in the class
-      employeeRoleUpdate.getId();
+      DB.updateEmployeeToDb(answers.selectedRole,answers.selectedEmployee);
       console.log(
-        `Updated ${answers.selectedEmployee}'s role in the database!`
+        `Updated ${answers.selectedEmployee.name}'s role in the database!`
       );
       appMenu(); //call the first questions
     });
 };
 
 const viewAllRoles = async () => {
-  const viewAllRoles = await viewAllRolesFromDb();
+  const viewAllRoles = await DB.viewAllRolesFromDb();
   //logging info (table)
   console.log(viewAllRoles);
   appMenu();
 };
 const addRole = async () => {
-  const viewAllDept = await getDepartment();
+  const viewAllDept = await DB.getDepartment();
   inquirer
 
     .prompt([
@@ -209,19 +201,18 @@ const addRole = async () => {
       },
     ])
     .then((answers) => {
-      const addNewRole = new AddNewRole(
+      //call the function in the class
+      DB.createRoleInDb(
         answers.nameRole,
         answers.salaryRole,
         answers.selectedDept
       );
-      //call the function in the class
-      addNewRole.getDept();
       console.log(`Created ${answers.nameRole} as a new role in the database!`);
       appMenu(); //call the first questions
     });
 };
 const viewAllDepartments = async () => {
-  const viewAllDepartments = await viewAllDepartmentsFromDb();
+  const viewAllDepartments = await DB.viewAllDepartmentsFromDb();
   console.log(viewAllDepartments);
   appMenu();
 };
@@ -241,11 +232,9 @@ const addDepartment = () => {
       },
     ])
     .then((answers) => {
-      const employeeAddDepartment = new EmployeeAddDepartment(
-        answers.nameDepartment
-      );
+     
       //call the function in the class
-      employeeAddDepartment.createDeptInDb();
+      DB.createDeptInDb(answers.nameDepartment);
       console.log(
         `Created ${answers.nameDepartment} as a new department in the database!`
       );
@@ -253,7 +242,7 @@ const addDepartment = () => {
     });
 };
 const updateEmployeeManager = async () => {
-  const employeeInfo = await getNames();
+  const employeeInfo = await DB.getNames();
   inquirer
     .prompt([
       {
@@ -270,18 +259,17 @@ const updateEmployeeManager = async () => {
       },
     ])
     .then((answers) => {
-      const employeeManagerUpdate = new EmployeeManagerUpdate(
-        answers.selectedEmployee,
-        answers.selectedManager
-      );
+    
       //call the function in the class
-      employeeManagerUpdate.getId();
+      DB.updateManagerToDb(
+        answers.selectedManager,
+        answers.selectedEmployee
+      );
       console.log(
         `Updated ${answers.selectedEmployee}'s manager in the database!`
       );
       appMenu(); //call the first questions
     });
 };
-
 
 appMenu();
