@@ -266,7 +266,7 @@ const updateEmployeeManager = async () => {
         answers.selectedEmployee
       );
       console.log(
-        `Updated ${answers.selectedEmployee[0]}'s manager in the database!`
+        `Updated ${answers.selectedEmployee}'s manager in the database!`
       );
       appMenu(); //call the first questions
     });
