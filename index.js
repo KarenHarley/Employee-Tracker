@@ -53,8 +53,7 @@ const appMenu = () => {
           updateEmployeeManager();
           break;
         case "Quit":
-          //Quit somehow (look at how to do it)
-          //process.exit
+         
           console.log("Bye");
           db.end();
       }
@@ -65,9 +64,6 @@ const viewAllEmployeesTable = async () => {
   const viewAllEm = await DB.viewAllEmployees();
   //logging info (table)
   console.log(viewAllEm);
-  /*
-DB.getRole().then((data) => {console.log(data)});
-  */
   appMenu();
 };
 const addEmployee = async () => {
@@ -154,7 +150,7 @@ const updateEmployeeRole = async () => {
       //call the function in the class
       DB.updateEmployeeToDb(answers.selectedRole,answers.selectedEmployee);
       console.log(
-        `Updated ${answers.selectedEmployee.name}'s role in the database!`
+        `Updated Employee's role in the database!`
       );
       appMenu(); //call the first questions
     });
@@ -266,7 +262,7 @@ const updateEmployeeManager = async () => {
         answers.selectedEmployee
       );
       console.log(
-        `Updated ${answers.selectedEmployee}'s manager in the database!`
+        `Updated employee's manager in the database!`
       );
       appMenu(); //call the first questions
     });
