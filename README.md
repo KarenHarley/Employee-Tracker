@@ -46,7 +46,7 @@ This command-line application that manages a company's employee database, using 
   ## Walkthough
   https://drive.google.com/file/d/1Q5gK_gZlnFQEQ8DP4a1DLxAJ9Fbt1yZg/view?usp=sharing
   ## Questions
-  To reach me please contact me in the email address below
+  To reach me please contact me in the email address below!
 
   - GitHub: https://github.com/KarenHarley
   - Email: karenharley88@gmail.com
