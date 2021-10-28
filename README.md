@@ -42,7 +42,7 @@ This command-line application that manages a company's employee database, using 
   ## License
   The license used for this project: MIT
   ## Contribute
-  If you would like to contribute please contact me.
+  If you would like to contribute please contact me. Info below!
   ## Walkthough
   https://drive.google.com/file/d/1Q5gK_gZlnFQEQ8DP4a1DLxAJ9Fbt1yZg/view?usp=sharing
   ## Questions
