@@ -48,8 +48,8 @@ This command-line application that manages a company's employee database, using 
   ## Questions
   To reach me please contact me in the email address below!
 
-  - GitHub: https://github.com/KarenHarley
-  - Email: karenharley88@gmail.com
+  - GitHub: `https://github.com/KarenHarley`
+  - Email: `karenharley88@gmail.com`
     
     
   
